@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, Button, Input } from 'antd'
+import axios from 'axios'
 
 import TaskItem from './TaskItem'
 
@@ -8,19 +9,36 @@ function App() {
   const [taskName, setTaskName] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
 
-
-  const handleAddTask = () => {
-    
+  async function getTaskList() {
+    const response = await axios.get('http://localhost:3000/tasks')
+    setTaskList(response.data)
   }
 
-  const handleUpdateTask = (id, name, description) => {
-    
-  }
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getTaskList()
+  }, [])
 
-  const handleDeleteTask = (id) => {
-   
+  const handleAddTask = async () => {
+    const newTask = {
+      name: taskName,
+      description: taskDescription,
+    }
+    await axios.post('http://localhost:3000/tasks', newTask)
+    getTaskList()
   }
-
+  const handleUpdateTask = async (id, name, description) => {
+    const newTask = {
+      name: name,
+      description: description,
+    }
+    await axios.patch(`http://localhost:3000/tasks/${id}`, newTask)
+    getTaskList()
+  }
+  const handleDeleteTask = async (id) => {
+    await axios.delete(`http://localhost:3000/tasks/${id}`)
+    getTaskList()
+  }
 
   const renderTaskList = useMemo(() => {
     return taskList.map((task) => (
