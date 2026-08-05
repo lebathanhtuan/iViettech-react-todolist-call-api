@@ -1,87 +1,18 @@
-import { useState, useMemo, useEffect } from 'react'
-import { Card, Button, Input } from 'antd'
-import axios from 'axios'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import TaskItem from './TaskItem'
+import HomePage from './pages/Home'
+import LoginPage from './pages/Login'
+import RegisterPage from './pages/Register'
 
 function App() {
-  const [taskList, setTaskList] = useState([])
-  const [taskName, setTaskName] = useState('')
-  const [taskDescription, setTaskDescription] = useState('')
-
-  async function getTaskList() {
-    const response = await axios.get('http://localhost:4000/tasks')
-    setTaskList(response.data)
-  }
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    getTaskList()
-  }, [])
-
-  const handleAddTask = async () => {
-    const newTask = {
-      name: taskName,
-      description: taskDescription,
-    }
-    await axios.post('http://localhost:4000/tasks', newTask)
-    getTaskList()
-    setTaskName('')
-    setTaskDescription('')
-  }
-  const handleUpdateTask = async (id, name, description) => {
-    const newTask = {
-      name: name,
-      description: description,
-    }
-    await axios.put(`http://localhost:4000/tasks/${id}`, newTask)
-    getTaskList()
-  }
-  const handleDeleteTask = async (id) => {
-    await axios.delete(`http://localhost:4000/tasks/${id}`)
-    getTaskList()
-  }
-
-  const renderTaskList = useMemo(() => {
-    return taskList.map((task) => (
-      <TaskItem
-        key={task.id}
-        id={task.id}
-        name={task.name}
-        description={task.description}
-        handleUpdateTask={handleUpdateTask}
-        handleDeleteTask={handleDeleteTask}
-      />
-    ))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskList])
-
   return (
-    <div style={{ width: '100%', minHeight: '100vh' }}>
-      <div style={{ margin: '24px auto', width: '500px' }}>
-        <Card title="Thêm công việc" size="small" style={{ textAlign: 'left' }}>
-          <label>Tên công việc</label>
-          <Input
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-          />
-          <label>Mô tả</label>
-          <Input
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-          />
-          <Button
-            type="primary"
-            block
-            style={{ marginTop: 24 }}
-            onClick={() => handleAddTask()}
-          >
-            Thêm
-          </Button>
-        </Card>
-        {renderTaskList}
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

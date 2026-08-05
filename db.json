@@ -15,5 +15,13 @@
       "description": "re[wporjp[eowjrk",
       "id": 4
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Tuan",
+      "email": "tuan@gmail.com",
+      "password": "123456"
+    }
   ]
 }
