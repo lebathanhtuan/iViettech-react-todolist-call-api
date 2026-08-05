@@ -10,7 +10,7 @@ function App() {
   const [taskDescription, setTaskDescription] = useState('')
 
   async function getTaskList() {
-    const response = await axios.get('http://localhost:3000/tasks')
+    const response = await axios.get('http://localhost:4000/tasks')
     setTaskList(response.data)
   }
 
@@ -24,19 +24,21 @@ function App() {
       name: taskName,
       description: taskDescription,
     }
-    await axios.post('http://localhost:3000/tasks', newTask)
+    await axios.post('http://localhost:4000/tasks', newTask)
     getTaskList()
+    setTaskName('')
+    setTaskDescription('')
   }
   const handleUpdateTask = async (id, name, description) => {
     const newTask = {
       name: name,
       description: description,
     }
-    await axios.patch(`http://localhost:3000/tasks/${id}`, newTask)
+    await axios.put(`http://localhost:4000/tasks/${id}`, newTask)
     getTaskList()
   }
   const handleDeleteTask = async (id) => {
-    await axios.delete(`http://localhost:3000/tasks/${id}`)
+    await axios.delete(`http://localhost:4000/tasks/${id}`)
     getTaskList()
   }
 
