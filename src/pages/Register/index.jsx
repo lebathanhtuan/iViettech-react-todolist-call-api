@@ -6,7 +6,12 @@ function RegisterPage() {
   const navigate = useNavigate()
 
   const handleRegister = async (values) => {
-    // Register logic
+    try {
+      await axios.post('http://localhost:4000/users/register', values)
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

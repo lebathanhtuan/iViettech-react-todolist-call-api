@@ -1,13 +1,10 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, Button, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import TaskItem from '../../components/TaskItem'
 
 function HomePage() {
-  const navigate = useNavigate()
-
   const [taskList, setTaskList] = useState([])
   const [taskName, setTaskName] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
@@ -16,6 +13,11 @@ function HomePage() {
     const response = await axios.get('http://localhost:4000/tasks')
     setTaskList(response.data)
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getTaskList()
+  }, [])
 
   const handleAddTask = async () => {
     const newTask = {

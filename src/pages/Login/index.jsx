@@ -6,7 +6,12 @@ function LoginPage() {
   const navigate = useNavigate()
 
   const handleLogin = async (values) => {
-    // Login logic
+    try {
+      await axios.post('http://localhost:4000/users/login', values)
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
